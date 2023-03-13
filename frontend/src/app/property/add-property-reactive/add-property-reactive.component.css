@@ -1,0 +1,14 @@
+.tabButton {
+  margin-right: 25%;
+}
+.form-group{
+  margin-top: 0.5rem;
+}
+.photo-control {
+  min-height: 300px;
+  vertical-align: middle;
+  text-align: center;
+  border: 1px dashed blue;
+  margin: 5px;
+}
+
