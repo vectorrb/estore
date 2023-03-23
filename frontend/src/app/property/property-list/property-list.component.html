@@ -1,5 +1,28 @@
+<!-- {{Today|date:'fullDate'}} <br /> -->
 <div class="row">
-  <div *ngFor="let property of Properties" class="col">
+  <div class="col-6 col-md-4 col-sm-12">
+    <label class="">Filter City: </label>
+    <input class="" [(ngModel)]="City">
+    <button type="reset"><i class="bi bi-arrow-counterclockwise"></i></button>
+  </div>
+  <div class="col-6 col-md-6 col-sm-12 bg-light border-dark">
+    <label >Sort by: </label>
+    <select [(ngModel)]="SortParameter">
+      <option selected value="">---Select Parameter---</option>
+      <option value="City">City</option>
+      <option value="Price">Price</option>
+    </select>
+
+    <button type="button" class="" (click)="onSortDirection()" style="border: none; background: none;">
+      <span *ngIf="SortDirection == 'asc'" class="border-1 rounded-0 p-1"><i class="bi bi-sort-alpha-up"></i></span>
+      <span *ngIf="SortDirection == 'desc'" class="border-1 rounded-0 p-1"><i class="bi bi-sort-alpha-down-alt"></i></span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div *ngFor="let property of Properties|filter:City:'City'|sort:[SortParameter,SortDirection]"
+    class="col-sm-12 col-lg-3 col-md-6">
     <app-property-card [property]="property" class=""></app-property-card>
   </div>
-  </div>
+</div>

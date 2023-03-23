@@ -1,0 +1,16 @@
+.card {
+  min-height: 600px;
+}
+
+.card img{
+  height: 250px;
+}
+
+.card img-wrapper{
+  height: 250px;
+}
+
+.gallery{
+  display: inline-block;
+  margin-bottom: 20px;
+}

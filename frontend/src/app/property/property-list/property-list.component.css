@@ -1,0 +1,11 @@
+input select{
+  border-radius: -1px;
+}
+label{
+  float: left;
+  width: 113px;
+}
+select > option{
+  padding-left: 2px;
+  padding-right: 2px;
+}

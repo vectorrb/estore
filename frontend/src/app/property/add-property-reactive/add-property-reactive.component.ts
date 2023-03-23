@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, NgForm, Validators, FormControl } from '@angula
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { Property } from 'src/app/Models/Property';
 import { IPropertyBase } from 'src/app/Models/IPropertyBase';
+import { HousingService } from 'src/app/services/housing.service';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   selector: 'app-add-property-reactive',
@@ -16,10 +18,12 @@ export class AddPropertyReactiveComponent implements OnInit {
   nextClicked: boolean;
 
   addPropertyForm: FormGroup;
+  property = new Property();
 
   propertyTypes: Array<string> = ['House', 'Apartment', 'Duplex'];
   furnishTypes: Array<string> = ['Fully', 'Semi', 'Unfurnished'];
-  constructor(private fb: FormBuilder, private route: Router) { }
+  constructor(private fb: FormBuilder, private route: Router,
+    private housingService: HousingService, private alertify: AlertifyService) { }
   propertyView: Property = {
     Id: null,
     Name: '',
@@ -77,6 +81,7 @@ export class AddPropertyReactiveComponent implements OnInit {
       })
     });
   }
+
   get BasicInfo() {
     return this.addPropertyForm.controls.BasicInfo as FormGroup;
   }
@@ -178,9 +183,9 @@ export class AddPropertyReactiveComponent implements OnInit {
     return this.OtherInfo.controls.Description as FormControl;
   }
 
-  onBack() {
-    this.route.navigate(['/']);
-  }
+  // onBack() {
+  //   this.route.navigate(['/']);
+  // }
 
   allTabsValid(): boolean{
     this.nextClicked = true;
@@ -206,9 +211,45 @@ export class AddPropertyReactiveComponent implements OnInit {
     if(this.allTabsValid()){
       console.log('hello');
       console.log(this.addPropertyForm);
+      this.mapProperty();
+      this.housingService.addProperty(this.property);
+      if(this.SellRent.value == 2){
+        this.route.navigate(['/rent-property']);
+      }else
+      this.route.navigate(['/']);
+    }else{
+      this.alertify.error('Please check your form.')
     }
+
   }
 
+  mapProperty(): void{
+    console.log('map property');
+    this.property.Id = this.housingService.newPropId();
+    console.log('done')
+    this.property.SellRent +this.SellRent.value;
+    this.property.BHK = +this.BHK.value;
+    this.property.PropertyType = this.PType.value;
+    this.property.Name = this.Name.value;
+    this.property.City = this.City.value;
+    this.property.FurnishingType = this.FurnishingType.value;
+    this.property.Price = this.Price.value;
+    this.property.Security = this.Security.value;
+    this.property.Maintenance = this.Maintenance.value;
+    this.property.BuiltArea = this.BuiltArea.value;
+    this.property.CarpetArea = this.CarpetArea.value;
+    this.property.FloorNo = this.FloorNo.value;
+    this.property.TotalFloor = this.TotalFloor.value;
+    this.property.Address = this.Address.value;
+    this.property.Address2  = this.LandMark.value;
+    this.property.ReadyToMove = this.ReadyToMove.value;
+    this.property.AOP = this.AOP.value;
+    this.property.Gated = this.Gated.value;
+    this.property.MainEntrance = this.MainEntrance.value;
+    this.property.Possession = this.PossessionOn.value;
+    this.property.Description = this.Description.value;
+    this.property.PostedOn = new Date().toDateString();
+  }
 
   selectTab(NextTabId: number, IsCurrentTabValid: boolean) {
     this.nextClicked = true;
